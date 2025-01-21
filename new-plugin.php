@@ -3,7 +3,7 @@
 /*
 Plugin Name: New Plugin
 Description: This is my first wordpress plugin
-Version: 0.1
+Version: 0.0
 Author: Me
 Text Domain: new-plugin
 
@@ -41,14 +41,38 @@ function sence_crear_menu()
         'Sence pt',
         'Sence mt',
         'manage_options',
-        plugin_dir_path(__FILE__) . 'admin/admin1.php',
+        plugin_dir_path(__FILE__) . 'admin/views/admin.php',
         // 'MostrarContenido',
         // plugin_dir_url(__FILE__) . 'admin/images/icon.png',
         // position: '1'
     );
 
     add_submenu_page(
-        'sp_menu',
+        plugin_dir_path(__FILE__) . 'admin/views/admin.php',
+        'Cursos',
+        'Cursos',
+        'manage_options',
+        plugin_dir_path(__FILE__) . 'admin/views/courses.php',
+        // 'Submenu'
+    );
+    add_submenu_page(
+        plugin_dir_path(__FILE__) . 'admin/views/admin.php',
+        'OTEC',
+        'OTEC',
+        'manage_options',
+        plugin_dir_path(__FILE__) . 'admin/views/otec.php',
+    );
+    add_submenu_page(
+        null,
+        'Editar Otec',
+        'Editar Otec',
+        'manage_options',
+        // 'edit-otec',
+        plugin_dir_path(__FILE__) . 'admin/views/edit-otec.php',
+
+    );
+    add_submenu_page(
+        plugin_dir_path(__FILE__) . 'admin/views/admin.php',
         'Ajustes',
         'Ajustes',
         'manage_options',
@@ -72,9 +96,9 @@ function add_my_js($hook)
 {
     // echo "<script>console.log('$hook')</script>";
 
-    if ($hook != 'new-plugin/admin/admin1.php') {
-        return;
-    }
+    // if ($hook != 'new-plugin/admin/views/admin.php') {
+    //     return;
+    // }
     wp_enqueue_script('personalJs', plugins_url('admin/js/script.js', __FILE__));
 }
 add_action('admin_enqueue_scripts', 'add_my_js');
@@ -83,9 +107,9 @@ function add_my_css($hook)
 {
     // echo "<script>console.log('$hook')</script>";
 
-    if ($hook != 'new-plugin/admin/admin1.php') {
-        return;
-    }
+    // if ($hook != 'new-plugin/admin/views/admin.php') {
+    //     return;
+    // }
     wp_enqueue_style('personalCss', plugins_url('admin/css/style.css', __FILE__));
 }
 add_action('admin_enqueue_scripts', 'add_my_css');
@@ -93,7 +117,6 @@ add_action('admin_enqueue_scripts', 'add_my_css');
 function print_shortcode($atts)
 {
     $_short = new SenceView;
-
     $html = $_short->content();
     return $html;
 }

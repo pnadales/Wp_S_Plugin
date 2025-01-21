@@ -3,3 +3,31 @@
   border: solid 2px #000;
   color: #000000;
 }
+
+/* modal otec */
+#modal-background {
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(1px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+#modal-otec {
+  display: none;
+  height: 100%;
+  width: 100%;
+  align-content: center;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+#otec-card {
+  background-color: #fff;
+  border: solid 1px #c3c4c7;
+  width: 80%;
+  /* text-align: center; */
+  margin: auto;
+  padding: 1rem;
+}
