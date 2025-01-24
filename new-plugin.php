@@ -49,6 +49,13 @@ function sence_crear_menu()
 
     add_submenu_page(
         plugin_dir_path(__FILE__) . 'admin/views/admin.php',
+        'OTEC',
+        'OTEC',
+        'manage_options',
+        plugin_dir_path(__FILE__) . 'admin/views/otec.php',
+    );
+    add_submenu_page(
+        plugin_dir_path(__FILE__) . 'admin/views/admin.php',
         'Cursos',
         'Cursos',
         'manage_options',
@@ -56,11 +63,13 @@ function sence_crear_menu()
         // 'Submenu'
     );
     add_submenu_page(
-        plugin_dir_path(__FILE__) . 'admin/views/admin.php',
-        'OTEC',
-        'OTEC',
+        null,
+        'Alumnos',
+        'Alumnos',
         'manage_options',
-        plugin_dir_path(__FILE__) . 'admin/views/otec.php',
+        // 'edit-otec',
+        plugin_dir_path(__FILE__) . 'admin/views/students.php',
+
     );
     add_submenu_page(
         null,
@@ -70,6 +79,13 @@ function sence_crear_menu()
         // 'edit-otec',
         plugin_dir_path(__FILE__) . 'admin/views/edit-otec.php',
 
+    );
+    add_submenu_page(
+        plugin_dir_path(__FILE__) . 'admin/views/admin.php',
+        'URLs',
+        'URLs',
+        'manage_options',
+        plugin_dir_path(__FILE__) . 'admin/views/urls.php'
     );
     add_submenu_page(
         plugin_dir_path(__FILE__) . 'admin/views/admin.php',
@@ -96,12 +112,36 @@ function add_my_js($hook)
 {
     // echo "<script>console.log('$hook')</script>";
 
-    // if ($hook != 'new-plugin/admin/views/admin.php') {
-    //     return;
-    // }
+    if (
+        $hook != 'new-plugin/admin/views/admin.php' and
+        $hook != 'new-plugin/admin/views/courses.php' and
+        $hook != 'new-plugin/admin/views/urls.php' and
+        $hook != 'new-plugin/admin/views/otec.php' and
+        $hook != 'new-plugin/admin/views/students.php'
+    ) {
+        return;
+    }
     wp_enqueue_script('personalJs', plugins_url('admin/js/script.js', __FILE__));
+    wp_localize_script('personalJs', 'SolicitudesAjax', [
+        'url' => admin_url('admin-ajax.php'),
+        'seguridad' => wp_create_nonce('seg')
+    ]);
 }
 add_action('admin_enqueue_scripts', 'add_my_js');
+
+function eliminar_otec()
+{
+    $nonce = $_POST['nonce'];
+    if (!wp_verify_nonce($nonce, 'seg')) {
+        die('no tiene permisos');
+    }
+    $id = $_POST['id'];
+    global $wpdb;
+    $table_otec = "{$wpdb->prefix}otec_data";
+    $wpdb->delete($table_otec, array('rut_otec' => $id));
+    return true;
+}
+add_action('wp_ajax_eliminarOtec', 'eliminar_otec');
 
 function add_my_css($hook)
 {

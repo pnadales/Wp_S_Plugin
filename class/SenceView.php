@@ -40,9 +40,9 @@ class SenceView
     $CodigoCurso = $form_data['codigo_curso'];
     $LineaCapacitacion = $form_data['linea_capacitacion'];
     $RunAlumno = $form_data['run_alumno'];
-    $IdSesionAlumno = $form_data['run_alumno'];
-    $URLExito = 'https://www.google.com/';
-    $URLError = 'https://www.youtube.com/';
+    $IdSesionAlumno = $form_data['id_sesion_alumno'];
+    $URLExito = $form_data['url_exito'];
+    $URLError = $form_data['url_error'];
 
     $html = " 
         <style>

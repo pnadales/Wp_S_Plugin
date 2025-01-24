@@ -14,7 +14,7 @@
   left: 0;
   z-index: -1;
 }
-#modal-otec {
+#modal {
   display: none;
   height: 100%;
   width: 100%;
@@ -23,7 +23,7 @@
   top: 0;
   z-index: -1;
 }
-#otec-card {
+#modal-card {
   background-color: #fff;
   border: solid 1px #c3c4c7;
   width: 80%;

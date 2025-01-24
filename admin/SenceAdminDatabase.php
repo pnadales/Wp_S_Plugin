@@ -72,12 +72,13 @@ class SenceAdminDatabase
                             FOREIGN KEY (`run_alumno`) REFERENCES {$user}(`run_alumno`) ON DELETE CASCADE
                             );";
         $table_session_query = "CREATE TABLE IF NOT EXISTS {$session}(
-                            `id_sesion` INT,
+                            `id_sesion` INT AUTO_INCREMENT,
+                            `id_sesion_sence` VARCHAR(149),
                             `run_alumno` VARCHAR(10) NOT NULL,
                             `rut_otec` VARCHAR(10) NOT NULL,
                             `codigo_curso` VARCHAR(50) NOT NULL,
-                            `fecha` TIMESTAMP NOT NULL,
-                            `duracion` TIME NOT NULL,
+                            `fecha` TIMESTAMP,
+                            `duracion` TIME,
                             PRIMARY KEY (`id_sesion`),
                             FOREIGN KEY (`run_alumno`) REFERENCES {$user}(`run_alumno`) ON DELETE CASCADE,
                             FOREIGN KEY (`rut_otec`, `codigo_curso`) REFERENCES {$course}(`rut_otec`, `codigo_curso`)
@@ -118,6 +119,19 @@ class SenceAdminDatabase
         // var_dump($result);
         return $result;
     }
+    public static function update_otec($data)
+    {
+        self::init();
+        $otec_data = [
+            'nombre_otec' => $data['nombre_otec'],
+            'token' => $data['token']
+        ];
+        self::$db->update(
+            self::$table_otec,
+            $otec_data,
+            array('rut_otec' => $data['rut_otec'])
+        );
+    }
     public static function insert_course($data)
     {
         self::init();
@@ -126,7 +140,7 @@ class SenceAdminDatabase
             'codigo_curso' => $data['codigo_curso'],
             'cod_sence' => $data['cod_sence'],
             'linea_capacitacion' => (int)($data['linea_capacitacion']),
-            'nombre' => $data['nombre_curso']
+            'nombre' => $data['nombre']
         ];
         self::$db->insert(self::$table_course, $course_data);
     }
@@ -137,6 +151,32 @@ class SenceAdminDatabase
         $result = self::$db->get_results($query, ARRAY_A);
         // var_dump($result);
         return $result ? $result : array();
+    }
+    public static function get_courses_by_otec($otec)
+    {
+        self::init();
+        $query = "SELECT * FROM " . self::$table_course . " WHERE rut_otec='$otec'";
+        $result = self::$db->get_results($query, ARRAY_A);
+        // var_dump($result);
+        return $result ? $result : array();
+    }
+
+    public static function update_course($data)
+    {
+        self::init();
+        $course_data = [
+            'cod_sence' => $data['cod_sence'],
+            'linea_capacitacion' => (int)($data['linea_capacitacion']),
+            'nombre' => $data['nombre']
+        ];
+        self::$db->update(
+            self::$table_course,
+            $course_data,
+            array(
+                'rut_otec' => $data['rut_otec'],
+                'codigo_curso' => $data['codigo_curso']
+            )
+        );
     }
     public static function insert_user($data)
     {
@@ -149,6 +189,8 @@ class SenceAdminDatabase
         ];
         self::$db->insert(self::$table_user, $user_data);
     }
+
+
     public static function get_users()
     {
         self::init();
@@ -164,7 +206,7 @@ class SenceAdminDatabase
             'run_alumno' => $data['run_alumno'],
             'rut_otec' => $data['rut_otec'],
             'codigo_curso' => $data['codigo_curso'],
-            'status' => $data['status']
+            'status' => 1
         ];
         self::$db->insert(self::$table_user_course, $user_course_data);
     }
@@ -176,21 +218,50 @@ class SenceAdminDatabase
         // var_dump($result);
         return $result ? $result : array();
     }
+    public static function get_users_by_course($otec, $codigo_curso)
+    {
+        self::init();
+        $query = "SELECT * FROM " . self::$table_user . " u INNER JOIN " . self::$table_user_course . " uc ON u.run_alumno = uc.run_alumno WHERE uc.rut_otec='$otec' AND uc.codigo_curso='$codigo_curso'";
+        $result = self::$db->get_results($query, ARRAY_A);
+        // var_dump($result);
+        return $result ? $result : array();
+    }
 
     public static function insert_url($data)
     {
         self::init();
-        $user_data = [
-            'rut_otec' => $data['otec'],
+        $url_data = [
+            'rut_otec' => $data,
+            'url_exito' => '',
+            'url_error' => ''
+        ];
+        self::$db->insert(self::$table_url, $url_data);
+    }
+    public static function update_url($data)
+    {
+        self::init();
+        $url_data = [
             'url_exito' => $data['url_exito'],
             'url_error' => $data['url_error']
         ];
-        self::$db->insert(self::$table_user, $user_data);
+        self::$db->update(
+            self::$table_url,
+            $url_data,
+            array('rut_otec' => $data['rut_otec'])
+        );
     }
-    public static function get_urls($otec, $course)
+    public static function get_urls()
     {
         self::init();
-        $query = "SELECT * FROM " . self::$table_url . " WHERE otec='$otec' AND codigo_curso='$course'";
+        $query = "SELECT * FROM " . self::$table_url;
+        $result = self::$db->get_results($query, ARRAY_A);
+        // var_dump($result);
+        return $result ? $result : array();
+    }
+    public static function get_url_by_otec($otec)
+    {
+        self::init();
+        $query = "SELECT * FROM " . self::$table_url . " WHERE otec='$otec'";
         $result = self::$db->get_results($query, ARRAY_A);
         // var_dump($result);
         return $result ? $result : array();

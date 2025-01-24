@@ -4,14 +4,22 @@ require_once __DIR__ . '/../SenceAdminDatabase.php';
 //Save OTEC data
 if (isset($_POST['save-otec'])) {
     SenceAdminDatabase::insert_otec($_POST);
+    SenceAdminDatabase::insert_url($_POST['rut_otec']);
+} elseif (isset($_POST['update-otec'])) {
+    SenceAdminDatabase::update_otec($_POST);
 }
 $res_otec = SenceAdminDatabase::get_otec();
 ?>
+<script>
+    const page = 'otec';
+    const modal_data = {};
+</script>
+
 
 <div class="wrap">
 
     <h1>Administrar OTECs</h1>
-    <button id='btn-add-otec' class='button-primary'>Agregar OTEC</button>
+    <button id='btn-add' class='button-primary'>Agregar OTEC</button>
 
     <hr>
 
@@ -29,13 +37,17 @@ $res_otec = SenceAdminDatabase::get_otec();
                 $nombre_otec = $value['nombre_otec'];
                 $token = $value['token'];
 
+
                 echo "
+            <script>
+            modal_data['$rut_otec']={rut_otec:'$rut_otec', nombre_otec:'$nombre_otec',token:'$token'};
+            </script>       
             <tr>
             <td>$rut_otec</td>
             <td>$nombre_otec</td>
             <td>$token</td>
             <td>
-            <button class='btn-edit-otec button-primary' data-id='$rut_otec'>Editar</button>
+            <button class='btn-edit button-primary' data-id='$rut_otec'>Editar</button>
             <button class='btn-delete-otec button-secondary' data-id='$rut_otec'>Eliminar</button>
             </td>
             </tr>
@@ -51,9 +63,9 @@ $res_otec = SenceAdminDatabase::get_otec();
 
     <div id="modal-background">
     </div>
-    <div id="modal-otec" class="wrap">
+    <div id="modal" class="wrap">
 
-        <div id="otec-card">
+        <div id="modal-card">
 
             <form method="post">
                 <table class="form-table">
@@ -62,7 +74,7 @@ $res_otec = SenceAdminDatabase::get_otec();
                             <label for="rut_otec">Rut OTEC:</label>
                         </th>
                         <td>
-                            <input type="text" name="rut_otec" class="regular-text">
+                            <input id="rut_otec" type="text" name="rut_otec" class="regular-text my-inputs">
                         </td>
                     </tr>
                     <tr>
@@ -70,7 +82,7 @@ $res_otec = SenceAdminDatabase::get_otec();
                             <label for="nombre_otec">Nombre OTEC:</label>
                         </th>
                         <td>
-                            <input type="text" name="nombre_otec" class="regular-text">
+                            <input id="nombre_otec" type="text" name="nombre_otec" class="regular-text my-inputs">
                         </td>
                     </tr>
                     <tr>
@@ -78,7 +90,7 @@ $res_otec = SenceAdminDatabase::get_otec();
                             <label for="token">Token:</label>
                         </th>
                         <td>
-                            <input type="text" name="token" class="regular-text">
+                            <input id="token" type="text" name="token" class="regular-text my-inputs">
                         </td>
 
                     </tr>
@@ -87,7 +99,7 @@ $res_otec = SenceAdminDatabase::get_otec();
                         </th>
                         <td>
                             <button id="closeM" class="button">Salir</button>
-                            <input type="submit" name="save-otec" value="Guardar" class="button-primary">
+                            <input id="submit-modal" type="submit" name="save-otec" value="Guardar" class="button-primary">
 
                         </td>
                     </tr>
