@@ -10,6 +10,8 @@ Text Domain: new-plugin
 */
 
 require_once dirname(__FILE__) . '/class/SenceView.php';
+require_once dirname(__FILE__) . '/class/SenceExito.php';
+require_once dirname(__FILE__) . '/class/SenceError.php';
 require_once dirname(__FILE__) . '/admin/SenceAdminDatabase.php';
 
 
@@ -63,7 +65,7 @@ function sence_crear_menu()
         // 'Submenu'
     );
     add_submenu_page(
-        null,
+        'm',
         'Alumnos',
         'Alumnos',
         'manage_options',
@@ -72,7 +74,7 @@ function sence_crear_menu()
 
     );
     add_submenu_page(
-        null,
+        '',
         'Editar Otec',
         'Editar Otec',
         'manage_options',
@@ -154,11 +156,56 @@ function add_my_css($hook)
 }
 add_action('admin_enqueue_scripts', 'add_my_css');
 
-function print_shortcode($atts)
+function sence_button($atts)
 {
     $_short = new SenceView;
     $html = $_short->content();
     return $html;
 }
 
-add_shortcode("SENCE_BTN", "print_shortcode");
+add_shortcode("SENCE_BTN", "sence_button");
+
+function sence_exito($atts)
+{
+    $html = SenceExito::content();
+    return $html;
+}
+
+add_shortcode("SENCE-EXITO", "sence_exito");
+
+function sence_error($atts)
+{
+    $html = SenceError::content();
+    return $html;
+}
+
+add_shortcode("SENCE-ERROR", "sence_error");
+
+function mi_plugin_enqueue_frontend_script()
+{
+
+    if (!is_admin()) {
+        wp_enqueue_script(
+            'mi-plugin-frontend-script',
+            plugin_dir_url(__FILE__) . 'public/js/script.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'mi_plugin_enqueue_frontend_script');
+
+function mi_plugin_enqueue_frontend_style()
+{
+    if (!is_admin()) {
+        wp_enqueue_style(
+            'mi-plugin-frontend-style',
+            plugin_dir_url(__FILE__) . 'public/css/style.css',
+            array(),
+            '1.0.0',
+            'all'
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'mi_plugin_enqueue_frontend_style');

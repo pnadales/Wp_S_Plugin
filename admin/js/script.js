@@ -86,17 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const editOtecButtons = document.querySelectorAll(".btn-edit");
-  // editOtecButtons.forEach((editB) => {
-  //   editB.addEventListener("click", function () {
-  //     const otecId = this.dataset.id;
-  //     document.getElementById("rut_otec").value = otecId;
-  //     document.getElementById("rut_otec").readOnly = true;
-  //     document.getElementById("nombre_otec").value = otecs[otecId].nombre_otec;
-  //     document.getElementById("token").value = otecs[otecId].token;
-  //     setModalView("hidden", 100, true);
-  //   });
-  // });
-
   editOtecButtons.forEach((editB) => {
     editB.addEventListener("click", function () {
       const submitModal = document.getElementById("submit-modal");
@@ -123,9 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // console.log(JSON.parse(this.dataset.id));
-      // console.log(modal_data);
-      // console.log(Object.keys(modal_data));
       setModalView("hidden", 100, true);
     });
   });

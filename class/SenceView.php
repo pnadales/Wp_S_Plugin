@@ -34,6 +34,8 @@ class SenceView
       return;
     }
     $url = 'https://sistemas.sence.cl/rcetest/Registro/IniciarSesion';
+    // $url = 'http://localhost:3000/ps_sence';
+
     $RutOtec = $form_data['rut_otec'];
     $token = $form_data['token'];
     $CodigoSence = $form_data['cod_sence'];
@@ -62,31 +64,22 @@ class SenceView
       method='post'
       action='{$url}'
     >
-      <!-- <label>RutOtec</label> -->
       <input type='hidden' name='RutOtec' value='{$RutOtec}' />
-      <!-- <label>Token</label> -->
       <input
         type='hidden'
         name='Token'
         value='{$token}'
       />
-      <!-- <label>CodSence</label> -->
       <input type='hidden' name='CodSence' value='{$CodigoSence}' />
-      <!-- <label>CodigoCurso</label> -->
       <input type='hidden' name='CodigoCurso' value='{$CodigoCurso}' />
-      <!-- <label>LineaCapacitacion</label> -->
       <input type='hidden' name='LineaCapacitacion' value='{$LineaCapacitacion}' />
-      <!-- <label>RunAlumno</label> -->
       <input type='hidden' name='RunAlumno' value='{$RunAlumno}' />
-      <!-- <label>IdSesionAlumno</label> -->
-      <input type='hidden' name='IdSesionAlumno' value='{$IdSesionAlumno}}' />
-      <!-- <label>UrlRetoma</label> -->
+      <input type='hidden' name='IdSesionAlumno' value='{$IdSesionAlumno}' />
       <input
         type='hidden'
         name='UrlRetoma'
         value='{$URLExito}'
       />
-      <!-- <label>UrlError</label> -->
       <input
         type='hidden'
         name='UrlError'

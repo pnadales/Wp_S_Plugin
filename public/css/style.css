@@ -1,10 +1,11 @@
-/* #btn-sence {
+#btn-sence {
   border: none;
   background-color: #113b6a;
-  background-image: url(../images/sence.png);
+  background-image: url("../images/sence.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
   width: 11rem;
   height: 3rem;
-} */
+}
