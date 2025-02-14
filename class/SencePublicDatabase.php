@@ -59,10 +59,9 @@ class SencePublicDatabase
             AND uc.status = 1;";
 
         $result = self::$db->get_results($query, ARRAY_A);
-        // var_dump($result[0]);
-        // $data = [...$result[0], ...self::get_id_session()];
+
         $data = array_merge((array)$result[0], (array)self::get_id_session());
-        // var_dump($data);
+
         return $data;
     }
     public static function insert_session($data)
@@ -109,5 +108,13 @@ class SencePublicDatabase
                 'id_sesion_sence' => $id_sesion_sence
             )
         );
+    }
+    public static function is_sence_student($mail)
+    {
+        self::init();
+        $query = "SELECT * FROM " . self::$table_user . " WHERE correo_alumno = '$mail'";
+        $result = self::$db->get_results($query, ARRAY_A);
+
+        return (bool)$result;
     }
 }

@@ -1,0 +1,1 @@
+<h1>Vista general, si es necesaria</h1>

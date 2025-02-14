@@ -133,17 +133,29 @@ class SenceExito
 
     return $html;
   }
+
   public static function content()
   {
-    if (isset($_COOKIE["solicitud"])) { //Ya salió del sence, mostrar btn iniciar
+    $current_user = wp_get_current_user();
+    if (
+      !SencePublicDatabase::is_sence_student($current_user->user_email)
+    ) {
+      return;
+    }
+    $solicitud = isset($_COOKIE["solicitud"]);
+
+    setcookie("solicitud", "", time() - 3600, "/");
+
+    if ($solicitud && isset($_POST['IdSesionAlumno'])) { //Ya salió del sence, mostrar btn iniciar
       SencePublicDatabase::set_session_duration($_COOKIE["IdSesionAlumno"], $_COOKIE["IdSesionSence"]);
-      setcookie("solicitud", "", time() - 3600, "/");
+
       setcookie("IdSesionSence", "", time() - 3600, "/");
       setcookie("IdSesionAlumno", "", time() - 3600, "/");
       setcookie("inicio_temporizador", "", time() - 3600, "/");
+      echo '1';
       return self::login_sence();
     } elseif (isset($_POST['IdSesionSence'])) { //Recién ingresó sence
-      $current_user = wp_get_current_user();
+
       $form_data = SencePublicDatabase::get_form_sence_data($current_user->user_email);
       $RutOtec = $form_data['rut_otec'];
       $data = array_merge(['rut_otec' => $RutOtec], $_POST);
@@ -151,10 +163,17 @@ class SenceExito
       setcookie('inicio_temporizador', time(), time() + 3600, "/");
       setcookie("IdSesionSence", $_POST['IdSesionSence'], time() + 3600, "/");
       setcookie("IdSesionAlumno", $_POST['IdSesionAlumno'], time() + 3600, "/");
+      echo '2';
       return self::exit_sence($_POST['IdSesionSence']);
+    } elseif (isset($_POST['logout_redirect'])) {
+      echo "<script> const redirected=true;</script>";
+
+      return self::exit_sence();
     } elseif (isset($_COOKIE["IdSesionSence"])) { //Ya había ingresado sence
+
       return self::exit_sence();
     } else { //Aún no ingresa sence
+
       return self::login_sence();
     }
   }

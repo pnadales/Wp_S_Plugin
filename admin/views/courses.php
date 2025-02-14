@@ -61,7 +61,7 @@ $otec = SenceAdminDatabase::get_otec();
                 $cod_sence = $value['cod_sence'];
                 $linea_capacitacion = $value['linea_capacitacion'];
                 $nombre = $value['nombre'];
-                $studentsUrl = admin_url('admin.php?page=new-plugin%2Fadmin%2Fviews%2Fstudents.php');
+                $studentsUrl = admin_url('admin.php?page=registro-asistencia-sence-bn%2Fadmin%2Fviews%2Fstudents.php');
 
 
                 echo "

@@ -34,6 +34,7 @@ class SenceView
       return;
     }
     $url = 'https://sistemas.sence.cl/rcetest/Registro/IniciarSesion';
+    // $url = 'http://localhost:3000/ps_sence';
 
     $RutOtec = $form_data['rut_otec'];
     $token = $form_data['token'];

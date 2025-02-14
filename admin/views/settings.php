@@ -1,0 +1,1 @@
+<h1>Hola desde settings.php</h1>

@@ -93,11 +93,12 @@ class SenceAdminDatabase
 
     public static function plugin_db_init()
     {
-        $backtrace = debug_backtrace();
-        $file_name = basename($backtrace[0]['file']);
-        if (!($file_name === "new-plugin.php")) {
-            die('Not allowed');
-        }
+        // $backtrace = debug_backtrace();
+        // $file_name = basename($backtrace[0]['file']);
+
+        // if (!($file_name === "registro-asistencia-sence-bn.php")) {
+        //     die('Not allowed');
+        // }
         self::create_tables();
     }
     public static function insert_otec($data)
